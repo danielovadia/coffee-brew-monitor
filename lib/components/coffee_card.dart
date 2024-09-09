@@ -32,12 +32,17 @@ class CoffeeCard extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                         )),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: const EdgeInsets.all(12),
+                        ),
                         onPressed: () {
                           ref
                               .read(coffeesProvider.notifier)
                               .removeByKey(coffee.id ?? -1);
                         },
-                        child: const Icon(Icons.delete, color: Colors.red))
+                        child: const Icon(Icons.delete,
+                            color: Colors.red, size: 20))
                   ]),
               Text(
                 coffee.brewery ?? '',
@@ -52,4 +57,37 @@ class CoffeeCard extends ConsumerWidget {
       ),
     );
   }
+}
+
+FutureBuilder<List<Widget>> coffeeCardsBuilder(List<Coffee> coffees) {
+  return FutureBuilder(
+      future: createCoffeeWidgets(coffees),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          return GridView(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            children: snapshot.data as List<Widget>,
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(
+                'Error loading data: \n${snapshot.error} \n ${snapshot.stackTrace}'),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      });
+}
+
+Future<List<Widget>> createCoffeeWidgets(coffees) async {
+  List<Widget> coffeeWidgets = [];
+  for (Coffee coffee in coffees) {
+    coffeeWidgets.add(CoffeeCard(coffee: coffee));
+  }
+  return coffeeWidgets;
 }

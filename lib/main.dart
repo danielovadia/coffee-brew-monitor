@@ -1,11 +1,12 @@
 import 'package:coffee_monitor/components/add_coffee_dialog.dart';
+import 'package:coffee_monitor/components/coffee_cards_list_view.dart';
 import 'package:coffee_monitor/providers/coffees_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:coffee_monitor/components/coffee_card.dart';
 import 'package:coffee_monitor/models/coffee.dart';
 import 'package:coffee_monitor/services/local_storage.dart';
 import 'package:coffee_monitor/services/coffee_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,9 @@ class MainApp extends ConsumerWidget {
     List<Coffee> coffees = ref.watch(coffeesProvider);
 
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: GoogleFonts.lato().fontFamily,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -35,7 +39,7 @@ class MainApp extends ConsumerWidget {
           centerTitle: true,
           backgroundColor: Colors.brown,
         ),
-        body: coffeeCardsBuilder(coffees),
+        body: CoffeeCardsListView(coffees: coffees),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
@@ -43,7 +47,7 @@ class MainApp extends ConsumerWidget {
                 builder: (BuildContext context) => const AddCoffeeDialog());
           },
           backgroundColor: Colors.brown,
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

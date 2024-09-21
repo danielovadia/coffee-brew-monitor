@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 class CoffeeCardsListView extends StatelessWidget {
   final List<Coffee> coffees;
 
-  const CoffeeCardsListView({super.key, required this.coffees});
+  const CoffeeCardsListView({
+    super.key,
+    required this.coffees,
+  });
 
   @override
   Widget build(BuildContext context) {

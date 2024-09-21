@@ -13,9 +13,28 @@ Future<void> main() async {
   LocalStorage.instance.init();
 
   await CoffeeService.instance.init();
-  runApp(const ProviderScope(
+  runApp(ProviderScope(
       child: MaterialApp(
-    home: MainApp(),
+    debugShowCheckedModeBanner: false,
+    home: const MainApp(),
+    theme: ThemeData(
+      fontFamily: GoogleFonts.lato().fontFamily,
+      scaffoldBackgroundColor: const Color.fromARGB(255, 59, 59, 71),
+      colorScheme: const ColorScheme.light(
+        primary: Color.fromARGB(255, 59, 59, 71),
+        secondary: Color.fromARGB(255, 238, 236, 233),
+        onPrimary: Color.fromARGB(255, 238, 236, 233),
+      ),
+      textTheme: const TextTheme(
+          titleLarge: TextStyle(color: Colors.white70, letterSpacing: 1.5),
+          labelLarge: TextStyle(color: Colors.white70, letterSpacing: 1.2)),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromARGB(255, 59, 59, 71),
+      ),
+      cardColor: const Color.fromARGB(255, 59, 59, 71),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: Colors.orange[300]),
+    ),
   )));
 }
 
@@ -26,29 +45,26 @@ class MainApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<Coffee> coffees = ref.watch(coffeesProvider);
 
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: GoogleFonts.lato().fontFamily,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Coffee Monitor",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Coffee Monitor",
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.brown,
-        ),
-        body: CoffeeCardsListView(coffees: coffees),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => const AddCoffeeDialog());
-          },
-          backgroundColor: Colors.brown,
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
+      body: CoffeeCardsListView(coffees: coffees),
+      floatingActionButton: FloatingActionButton(
+        heroTag: null,
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => const AddCoffeeDialog());
+        },
+        backgroundColor:
+            Theme.of(context).floatingActionButtonTheme.backgroundColor,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

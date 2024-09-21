@@ -12,7 +12,8 @@ class CoffeePage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Coffee Page'),
+        title:
+            Text('Coffee Page', style: Theme.of(context).textTheme.titleLarge),
       ),
       body: Material(
         type: MaterialType.transparency,
@@ -24,8 +25,14 @@ class CoffeePage extends StatelessWidget {
                   transitionOnUserGestures: true,
                   tag: _coffee.id.toString(),
                   child: Text(_coffee.name ?? '',
-                      style: const TextStyle(fontSize: 24))),
-              Text('Brewery: ${_coffee.brewery}'),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontSize: 36))),
+              Text(
+                'Brewery: ${_coffee.brewery}',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             ],
           ),
         ),

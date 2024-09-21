@@ -17,8 +17,12 @@ class CoffeeCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: const Icon(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Theme.of(context).colorScheme.primary)),
+      leading: Icon(
         Icons.coffee,
+        color: Theme.of(context).colorScheme.onPrimary,
         size: 36,
       ),
       key: coffee.id != null ? Key(coffee.id.toString()) : null,
